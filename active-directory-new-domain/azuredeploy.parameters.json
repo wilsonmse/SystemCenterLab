@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "GEN-UNIQUE"
+      "value": "admin"
     },
     "adminPassword": {
-      "value": "GEN-PASSWORD"
+      "value": "P@$$W0RD1"
     },
     "domainName": {
-      "value": "corp.mydomain.com"
+      "value": "wse.lab"
     },
     "dnsPrefix": {
-      "value": "GEN-UNIQUE"
+      "value": "wse"
     }
   }
 }
