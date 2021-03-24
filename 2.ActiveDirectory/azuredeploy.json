@@ -172,35 +172,7 @@
                 "name": "Aligned"
             }
         },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2018-11-01",
-            "name": "VNet",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "virtualNetworkName": {
-                        "value": "[parameters('virtualNetworkName')]"
-                    },
-                    "virtualNetworkAddressRange": {
-                        "value": "[parameters('virtualNetworkAddressRange')]"
-                    },
-                    "subnetName": {
-                        "value": "[parameters('subnetName')]"
-                    },
-                    "subnetRange": {
-                        "value": "[parameters('subnetRange')]"
-                    },
-                    "location": {
-                        "value": "[parameters('location')]"
-                    }
-                }
-            }
-        },
+
         {
             "type": "Microsoft.Network/loadBalancers",
             "apiVersion": "2019-02-01",
