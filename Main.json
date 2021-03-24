@@ -16,6 +16,7 @@
         },
         "domainName": {
             "type": "string",
+            "defaultValue": "wse.lab",
             "metadata": {
                 "description": "The FQDN of the Active Directory Domain to be created"
             }
@@ -78,7 +79,7 @@
         },
         "subnetName": {
             "type": "string",
-            "defaultValue": "adSubnet",
+            "defaultValue": "SCSubnet",
             "metadata": {
                 "description": "Subnet name."
             }
@@ -277,6 +278,35 @@
                         "value": "[parameters('subnetName')]"
                     },
                     "subnetRange": {
+                        "value": "[parameters('subnetRange')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "AD",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(parameters('_artifactsLocation'), concat('2.ActiveDirectory/azuredeploy.json', parameters('_artifactsLocationSasToken')))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "domainName": {
+                        "value": "[parameters('domainName')]"
+                    },
+                    "dnsPrefix": {
                         "value": "[parameters('subnetRange')]"
                     },
                     "location": {
