@@ -289,7 +289,10 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2018-11-01",
-            "name": "AD",
+            "dependsOn": [
+                "VNet"
+            ],
+            "name": "ActiveDirectory",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -307,7 +310,7 @@
                         "value": "[parameters('domainName')]"
                     },
                     "dnsPrefix": {
-                        "value": "[parameters('subnetRange')]"
+                        "value": "[parameters('dnsPrefix')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -315,7 +318,5 @@
                 }
             }
         }
-    ],
-    "outputs": {}
-
+    ]
 }
