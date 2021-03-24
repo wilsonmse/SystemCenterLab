@@ -314,7 +314,14 @@
                     },
                     "location": {
                         "value": "[parameters('location')]"
+                    },
+                    "virtualNetworkName":{
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
                     }
+
                 }
             }
         }
