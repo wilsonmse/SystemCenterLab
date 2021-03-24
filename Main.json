@@ -238,7 +238,13 @@
             }
         }
     },
-    "variables": {},
+    "variables": {
+        "DomainAdmin": "[concat(parameters('domainName'),parameters('adminUsername'))]",
+        "DCVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'DC01')]",
+        "SQLVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'SQL01')]",
+        "SCOVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'SCO01')]"
+
+    },
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
@@ -339,10 +345,14 @@
                     },
                     "existingVnetResourceGroup":{
                         "value": "[resourceGroup().name]"
+                    },
+                    "DomaintoJoin": {
+                        "value": "[parameters('domainName')]"                        
                     }
 
                 }
             }
-        }
+        },
+
     ]
 }
