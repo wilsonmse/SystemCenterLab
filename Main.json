@@ -161,25 +161,8 @@
                 "description": "The virtual machine size."
             }
         },
-        "existingVirtualNetworkName": {
-            "type": "String",
-            "metadata": {
-                "description": "Specify the name of an existing VNet in the same resource group"
-            }
-        },
-        "existingVnetResourceGroup": {
-            "type": "String",
-            "defaultValue": "[resourceGroup().name]",
-            "metadata": {
-                "description": "Specify the resrouce group of the existing VNet"
-            }
-        },
-        "existingSubnetName": {
-            "type": "String",
-            "metadata": {
-                "description": "Specify the name of the Subnet Name"
-            }
-        },
+
+
         "imageOffer": {
             "type": "String",
             "defaultValue": "sql2019-ws2019",
@@ -320,6 +303,48 @@
                     },
                     "subnetName": {
                         "value": "[parameters('subnetName')]"
+                    }
+
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-11-01",
+            "dependsOn": [
+                "ActiveDirectory"
+            ],
+            "name": "SQL",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(parameters('_artifactsLocation'), concat('3.SQL/azuredeploy.json', parameters('_artifactsLocationSasToken')))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "domainName": {
+                        "value": "[parameters('domainName')]"
+                    },
+                    "dnsPrefix": {
+                        "value": "[parameters('dnsPrefix')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "existingVirtualNetworkName":{
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "existingSubnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "existingVnetResourceGroup":{
+                        "value": "[resourceGroup().name]"
                     }
 
                 }
