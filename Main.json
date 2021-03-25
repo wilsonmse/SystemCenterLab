@@ -388,11 +388,7 @@
                     },
                     "vmName":{
                         "value": "[variables('SCOVMName')]"                        
-                    },
-                    "dnsNameForPublicIP": {
-                        "value": "azrwsescopip234561'"                        
                     }
-
                 }
             }
         }
