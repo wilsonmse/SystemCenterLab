@@ -377,17 +377,20 @@
                     "location": {
                         "value": "[parameters('location')]"
                     },
-                    "existingVirtualNetworkName":{
+                    "VirtualNetworkName":{
                         "value": "[parameters('virtualNetworkName')]"
                     },
-                    "existingSubnetName": {
+                    "SubnetName": {
                         "value": "[parameters('subnetName')]"
-                    },
-                    "existingVnetResourceGroup":{
-                        "value": "[resourceGroup().name]"
                     },
                     "DomaintoJoin": {
                         "value": "[parameters('domainName')]"                        
+                    },
+                    "vmName":{
+                        "value": "[variables('SCOVMName')]"                        
+                    },
+                    "dnsNameForPublicIP": {
+                        "value": "[concat(variables('SCOVMName'), 'pip')]"                        
                     }
 
                 }
