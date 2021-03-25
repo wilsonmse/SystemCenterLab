@@ -75,32 +75,11 @@
                 "description": "Virtual network address range."
             }
         },
-        "loadBalancerFrontEndIPName": {
-            "type": "string",
-            "defaultValue": "LBFE",
-            "metadata": {
-                "description": "Load balancer front end IP address name."
-            }
-        },
-        "backendAddressPoolName": {
-            "type": "string",
-            "defaultValue": "LBBE",
-            "metadata": {
-                "description": "Backend address pool name."
-            }
-        },
         "inboundNatRulesName": {
             "type": "string",
             "defaultValue": "adRDP",
             "metadata": {
                 "description": "Inbound NAT rules name."
-            }
-        },
-        "networkInterfaceName": {
-            "type": "string",
-            "defaultValue": "adNic",
-            "metadata": {
-                "description": "Network interface name."
             }
         },
         "privateIPAddress": {
@@ -123,34 +102,34 @@
             "metadata": {
                 "description": "Subnet IP range."
             }
-        },
-        "publicIPAddressName": {
-            "type": "string",
-            "defaultValue": "adPublicIP",
-            "metadata": {
-                "description": "Subnet IP range."
-            }
-        },
-        "availabilitySetName": {
-            "type": "string",
-            "defaultValue": "adAvailabiltySet",
-            "metadata": {
-                "description": "Availability set name."
-            }
-        },
-        "loadBalancerName": {
-            "type": "string",
-            "defaultValue": "adLoadBalancer",
-            "metadata": {
-                "description": "Load balancer name."
-            }
         }
     },
+    "variables": {
+        "publicIpAddressName": "[concat(parameters('virtualMachineName'), '-publicip-', uniqueString(parameters('virtualMachineName')))]",
+        "networkInterfaceName": "[concat(parameters('virtualMachineName'), '-nic')]",
+        "networkSecurityGroupName": "[concat(parameters('virtualMachineName'), '-nsg')]",
+        "networkSecurityGroupRules": [
+            {
+                "name": "RDP",
+                "properties": {
+                    "priority": 300,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "3389"
+                }
+            }
+        ]
+    },
+
     "resources": [
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2019-02-01",
-            "name": "[parameters('publicIPAddressName')]",
+            "name": "[variables('publicIpAddressName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "Static",
@@ -160,66 +139,22 @@
             }
         },
         {
-            "type": "Microsoft.Compute/availabilitySets",
-            "apiVersion": "2019-03-01",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('networkSecurityGroupName')]",
             "location": "[parameters('location')]",
-            "name": "[parameters('availabilitySetName')]",
             "properties": {
-                "PlatformUpdateDomainCount": 20,
-                "PlatformFaultDomainCount": 2
-            },
-            "sku": {
-                "name": "Aligned"
-            }
-        },
-
-        {
-            "type": "Microsoft.Network/loadBalancers",
-            "apiVersion": "2019-02-01",
-            "name": "[parameters('loadBalancerName')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[parameters('publicIPAddressName')]"
-            ],
-            "properties": {
-                "frontendIPConfigurations": [
-                    {
-                        "name": "[parameters('loadBalancerFrontEndIPName')]",
-                        "properties": {
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
-                            }
-                        }
-                    }
-                ],
-                "backendAddressPools": [
-                    {
-                        "name": "[parameters('backendAddressPoolName')]"
-                    }
-                ],
-                "inboundNatRules": [
-                    {
-                        "name": "[parameters('inboundNatRulesName')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', parameters('loadBalancerName'), parameters('loadBalancerFrontEndIPName'))]"
-                            },
-                            "protocol": "Tcp",
-                            "frontendPort": 3389,
-                            "backendPort": 3389,
-                            "enableFloatingIP": false
-                        }
-                    }
-                ]
+                "securityRules": "[variables('networkSecurityGroupRules')]"
             }
         },
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-02-01",
-            "name": "[parameters('networkInterfaceName')]",
+            "name": "[variables('networkInterfaceName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[parameters('loadBalancerName')]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]",
+                "[resourceId('Microsoft.Network/publicIpAddresses/', variables('publicIpAddressName'))]"    
             ],
             "properties": {
                 "ipConfigurations": [
@@ -230,20 +165,13 @@
                             "privateIPAddress": "[parameters('privateIPAddress')]",
                             "subnet": {
                                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
-                            },
-                            "loadBalancerBackendAddressPools": [
-                                {
-                                    "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('loadBalancerName'), parameters('backendAddressPoolName'))]"
-                                }
-                            ],
-                            "loadBalancerInboundNatRules": [
-                                {
-                                    "id": "[resourceId('Microsoft.Network/loadBalancers/inboundNatRules', parameters('loadBalancerName'), parameters('inboundNatRulesName'))]"
-                                }
-                            ]
+                            }
                         }
                     }
-                ]
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('networkSecurityGroupName')]"
+                }
             }
         },
         {
@@ -252,16 +180,11 @@
             "name": "[parameters('virtualMachineName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[parameters('networkInterfaceName')]",
-                "[parameters('availabilitySetName')]",
-                "[parameters('loadBalancerName')]"
+                "[variables('networkInterfaceName')]"
             ],
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
-                },
-                "availabilitySet": {
-                    "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetName'))]"
                 },
                 "osProfile": {
                     "computerName": "[parameters('virtualMachineName')]",
@@ -299,7 +222,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
                         }
                     ]
                 }
