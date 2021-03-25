@@ -170,7 +170,7 @@
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[variables('networkSecurityGroupName')]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
                 }
             }
         },
