@@ -8,9 +8,6 @@
     "adminPassword": {
       "value": "GEN-PASSWORD"
     },
-    "dnsNameForPublicIP": {
-      "value": "GEN-UNIQUE"
-    },
     "virtualNetworkName": {
         "value": "GET-VNETNAME" 
     },
