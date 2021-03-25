@@ -14,13 +14,6 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "dnsNameForPublicIP": {
-      "type": "string",
-
-      "metadata": {
-        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
-      }
-    },
     "windowsOSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
@@ -79,10 +72,10 @@
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
     "nicName": "[concat(parameters('vmName'),'_vmNic')]",
-    "publicIPAddressName": "[concat(parameters('vmName'),'_PublicIP')]",
     "publicIPAddressType": "Dynamic",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-    "networkSecurityGroupName": "default-NSG"
+    "networkSecurityGroupName": "default-NSG",
+    "publicIpAddressName": "[concat(parameters('vmName'), '-publicip-', uniqueString(parameters('vmName')))]"
   },
   "resources": [
     {
