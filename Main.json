@@ -395,7 +395,7 @@
                     "DomaintoJoin": {
                         "value": "[parameters('domainName')]"                        
                     },
-                    "vmName":{
+                    "virtualMachineName":{
                         "value": "[variables('SCOVMName')]"                        
                     }
                 }
