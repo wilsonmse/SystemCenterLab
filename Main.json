@@ -390,7 +390,7 @@
                         "value": "[variables('SCOVMName')]"                        
                     },
                     "dnsNameForPublicIP": {
-                        "value": "[concat(variables('SCOVMName'), 'pip')]"                        
+                        "value": "azrwsescopip'"                        
                     }
 
                 }
