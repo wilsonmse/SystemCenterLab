@@ -165,7 +165,7 @@
       "createOption": "empty",
       "caching": "ReadOnly",
       "writeAcceleratorEnabled": false,
-      "storageAccountType": "Premium_LRS",
+      "storageAccountType": "StandardSSD_LRS",
       "diskSizeGB": 1023
     },
     "tempDbPath": "D:\\SQLTemp"
@@ -238,7 +238,7 @@
           "osDisk": {
             "createOption": "fromImage",
             "managedDisk": {
-              "storageAccountType": "Premium_LRS"
+              "storageAccountType": "StandardSSD_LRS"
             }
           },
           "imageReference": {
