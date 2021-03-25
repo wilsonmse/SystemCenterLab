@@ -50,7 +50,7 @@
         },
         "VirtualMachineNamesPrefix": {
             "type": "string",
-            "defaultValue": "AZRVM",
+            "defaultValue": "azrvm",
             "metadata": {
                 "description": "Virtual machine name prefix to be used on all VMs."
             }
@@ -240,9 +240,9 @@
     },
     "variables": {
         "DomainAdmin": "[concat(parameters('domainName'),parameters('adminUsername'))]",
-        "DCVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'DC01')]",
-        "SQLVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'SQL01')]",
-        "SCOVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'SCO01')]"
+        "DCVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'dc01')]",
+        "SQLVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'sql01')]",
+        "SCOVMName": "[concat(parameters('VirtualMachineNamesPrefix'),'sco01')]"
 
     },
     "resources": [
