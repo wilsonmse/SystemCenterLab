@@ -19,6 +19,9 @@
     },
     "existingVnetResourceGroup": {
       "value": "GET-PREREQ-existingVnetResourceGroup"
+    },
+    "DomaintoJoin": {
+        "value": "GET-DOMAIN"
     }
   }
 }

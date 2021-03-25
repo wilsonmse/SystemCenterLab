@@ -11,11 +11,14 @@
     "dnsNameForPublicIP": {
       "value": "GEN-UNIQUE"
     },
-    "existingdiagnosticsStorageAccountName": {
-      "value": "GET-PREREQ-existingdiagStorName"
+    "virtualNetworkName": {
+        "value": "GET-VNETNAME" 
     },
-    "existingdiagnosticsStorageResourceGroup": {
-      "value": "GET-PREREQ-existingdiagStorRG"
+    "subnetname": {
+        "value": "GET-SUBNETNAME" 
+    },
+    "DomaintoJoin": {
+        "value": "GET-DOMAIN"
     }
   }
 }
