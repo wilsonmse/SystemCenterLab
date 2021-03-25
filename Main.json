@@ -353,6 +353,45 @@
                 }
             }
         },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-11-01",
+            "dependsOn": [
+                "ActiveDirectory",
+                "SQL"
+            ],
+            "name": "Orchestrator",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(parameters('_artifactsLocation'), concat('4.Orchestrator/azuredeploy.json', parameters('_artifactsLocationSasToken')))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "existingVirtualNetworkName":{
+                        "value": "[parameters('virtualNetworkName')]"
+                    },
+                    "existingSubnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "existingVnetResourceGroup":{
+                        "value": "[resourceGroup().name]"
+                    },
+                    "DomaintoJoin": {
+                        "value": "[parameters('domainName')]"                        
+                    }
 
+                }
+            }
+        },
     ]
 }
