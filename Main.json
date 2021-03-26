@@ -340,6 +340,9 @@
                     "virtualMachineName": {
                         "value": "[variables('SQLVMName')]"
                     },
+                    "virtualMachineSize": {
+                        "value": "Standard_DS3_v2_Promo"
+                    },
                     "location": {
                         "value": "[parameters('location')]"
                     },
