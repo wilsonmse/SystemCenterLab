@@ -74,7 +74,7 @@
     "nicName": "[concat(parameters('virtualMachineName'),'_vmNic')]",
     "publicIPAddressType": "Dynamic",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
-    "networkSecurityGroupName": "default-NSG",
+    "networkSecurityGroupName": "[concat(parameters('virtualMachineName'),'-nsg')]",
     "publicIpAddressName": "[concat(parameters('virtualMachineName'), '-publicip-', uniqueString(parameters('virtualMachineName')))]"
   },
   "resources": [
@@ -171,7 +171,19 @@
             "managedDisk": {
               "storageAccountType": "StandardSSD_LRS"
             }
-          }
+          },
+          "dataDisks": [
+            {
+              "name": "[concat(parameters('virtualMachineName'), '_DataDisk')]",
+              "caching": "ReadWrite",
+              "createOption": "Empty",
+              "diskSizeGB": 40,
+              "managedDisk": {
+                "storageAccountType": "StandardSSD_LRS"
+              },
+              "lun": 0
+            }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
