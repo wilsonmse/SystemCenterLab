@@ -223,44 +223,51 @@
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
       ],
-      "properties": [
-        {
-          "publisher": "Microsoft.Compute",
-          "type": "JsonADDomainExtension",
-          "typeHandlerVersion": "1.3",
-          "autoUpgradeMinorVersion": true,
-          "settings": {
-            "Name": "[parameters('DomaintoJoin')]",
-            "User": "[concat(parameters('DomaintoJoin'), '\\', parameters('adminUsername'))]",
-            "Restart": "true"
-          },
-          "protectedSettings": {
-            "Password": "[parameters('adminPassword')]"
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "JsonADDomainExtension",
+        "typeHandlerVersion": "1.3",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "Name": "[parameters('DomaintoJoin')]",
+          "User": "[concat(parameters('DomaintoJoin'), '\\', parameters('adminUsername'))]",
+          "Restart": "true"
+        },
+        "protectedSettings": {
+          "Password": "[parameters('adminPassword')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('virtualMachineName'),'/InstallOrchestrator')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+      ],
+      "properties":        {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.19",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[uri(parameters('_artifactsLocation'), concat('DSC/InstallOrchestrator.zip', parameters('_artifactsLocationSasToken')))]",
+          "ConfigurationFunction": "InstallOrchestrator.ps1\\InstallOrchestrator",
+          "properties": {
+            "ActivationKey": "[parameters('OrchestratorActivationKey')]",
+            "AdminCreds": {
+              "UserName": "[parameters('adminUsername')]",
+              "Password": "PrivateSettingsRef:AdminPassword"
+            }
           }
         },
-        {
-          "publisher": "Microsoft.Powershell",
-          "type": "DSC",
-          "typeHandlerVersion": "2.19",
-          "autoUpgradeMinorVersion": true,
-          "settings": {
-            "ModulesUrl": "[uri(parameters('_artifactsLocation'), concat('DSC/InstallOrchestrator.zip', parameters('_artifactsLocationSasToken')))]",
-            "ConfigurationFunction": "InstallOrchestrator.ps1\\InstallOrchestrator",
-            "Properties": {
-              "ActivationKey": "[parameters('OrchestratorActivationKey')]",
-              "AdminCreds": {
-                "UserName": "[parameters('adminUsername')]",
-                "Password": "PrivateSettingsRef:AdminPassword"
-              }
-            }
-          },
-          "protectedSettings": {
-            "Items": {
-              "AdminPassword": "[parameters('adminPassword')]"
-            }
+        "protectedSettings": {
+          "Items": {
+            "AdminPassword": "[parameters('adminPassword')]"
           }
         }
-      ]
+      }
     }
   ]
 }
