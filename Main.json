@@ -237,6 +237,7 @@
                 "description": "Path for SQL Log files. Please choose drive letter from F to Z and different than the one used for SQL data. Drive letter from A to E are reserved for system"
             }
         }
+
     },
     "variables": {
         "DomainAdmin": "[concat(parameters('domainName'),parameters('adminUsername'))]",
@@ -397,6 +398,9 @@
                     },
                     "virtualMachineName":{
                         "value": "[variables('SCOVMName')]"                        
+                    },
+                    "OrchestratorActivationKey":{
+                        "value":"aaa"
                     }
                 }
             }

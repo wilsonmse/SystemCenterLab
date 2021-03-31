@@ -3,7 +3,7 @@ Configuration InstallOrchestrator
     param 
     ( 
          [Parameter(Mandatory)]
-         [String]$activationKey,
+         [String]$ActivationKey,
     
          [Parameter(Mandatory)]
          [System.Management.Automation.PSCredential]$Admincreds
