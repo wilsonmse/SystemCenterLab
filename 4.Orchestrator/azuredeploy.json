@@ -14,6 +14,27 @@
         "description": "Password for the Virtual Machine."
       }
     },
+    "OrchestratorActivationKey":{
+      "type": "string",
+      "defaultValue": "aaaa",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }      
+    },
+   "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
+      },
+      "defaultValue": ""
+    },
     "windowsOSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
@@ -202,20 +223,44 @@
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
       ],
-      "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "JsonADDomainExtension",
-        "typeHandlerVersion": "1.3",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "Name": "[parameters('DomaintoJoin')]",
-          "User": "[concat(parameters('DomaintoJoin'), '\\', parameters('adminUsername'))]",
-          "Restart": "true"
+      "properties": [
+        {
+          "publisher": "Microsoft.Compute",
+          "type": "JsonADDomainExtension",
+          "typeHandlerVersion": "1.3",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "Name": "[parameters('DomaintoJoin')]",
+            "User": "[concat(parameters('DomaintoJoin'), '\\', parameters('adminUsername'))]",
+            "Restart": "true"
+          },
+          "protectedSettings": {
+            "Password": "[parameters('adminPassword')]"
+          }
         },
-        "protectedSettings": {
-          "Password": "[parameters('adminPassword')]"
+        {
+          "publisher": "Microsoft.Powershell",
+          "type": "DSC",
+          "typeHandlerVersion": "2.19",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "ModulesUrl": "[uri(parameters('_artifactsLocation'), concat('DSC/InstallOrchestrator.zip', parameters('_artifactsLocationSasToken')))]",
+            "ConfigurationFunction": "InstallOrchestrator.ps1\\InstallOrchestrator",
+            "Properties": {
+              "ActivationKey": "[parameters('OrchestratorActivationKey')]",
+              "AdminCreds": {
+                "UserName": "[parameters('adminUsername')]",
+                "Password": "PrivateSettingsRef:AdminPassword"
+              }
+            }
+          },
+          "protectedSettings": {
+            "Items": {
+              "AdminPassword": "[parameters('adminPassword')]"
+            }
+          }
         }
-      }
+      ]
     }
   ]
 }
