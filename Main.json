@@ -397,8 +397,7 @@
                     },
                     "virtualMachineName":{
                         "value": "[variables('SCOVMName')]"                        
-                    },
-                    
+                    }
                 }
             }
         }
