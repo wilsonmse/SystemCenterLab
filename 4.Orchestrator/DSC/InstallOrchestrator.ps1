@@ -7,6 +7,9 @@ Configuration InstallOrchestrator
     
          [Parameter(Mandatory)]
          [System.Management.Automation.PSCredential]$Admincreds
+
+	 [Int]$RetryCount=20,
+         [Int]$RetryIntervalSec=30
     )
 
     Import-DscResource -ModuleName xStorage, PSDesiredStateConfiguration, xPendingReboot
