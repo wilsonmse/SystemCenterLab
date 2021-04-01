@@ -16,7 +16,12 @@ Configuration InstallOrchestrator
 
     Node localhost
     {
-        WindowsFeature IIS
+        LocalConfigurationManager 
+        {
+            RebootNodeIfNeeded = $true
+        }
+
+	WindowsFeature IIS
         {
             Ensure = 'Present'
             Name   = 'Web-Server'
