@@ -6,9 +6,9 @@ Configuration InstallOrchestrator
          [String]$ActivationKey,
     
          [Parameter(Mandatory)]
-         [System.Management.Automation.PSCredential]$Admincreds
+         [System.Management.Automation.PSCredential]$Admincreds,
 
-	 [Int]$RetryCount=20,
+	     [Int]$RetryCount=20,
          [Int]$RetryIntervalSec=30
     )
 
