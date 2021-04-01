@@ -92,7 +92,7 @@
   "variables": {
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
-    "nicName": "[concat(parameters('virtualMachineName'),'_vmNic')]",
+    "nicName": "[concat(parameters('virtualMachineName'),'_nic')]",
     "publicIPAddressType": "Dynamic",
     "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]",
     "networkSecurityGroupName": "[concat(parameters('virtualMachineName'),'-nsg')]",
