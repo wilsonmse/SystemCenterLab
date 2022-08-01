@@ -165,7 +165,7 @@
 
         "imageOffer": {
             "type": "String",
-            "defaultValue": "sql2019-ws2019",
+            "defaultValue": "SQL2016SP2-WS2016",
             "allowedValues": [
                 "sql2019-ws2019",
                 "sql2017-ws2019",
