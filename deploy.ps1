@@ -1,3 +1,5 @@
+Add-AzAccount
+
 $RG = 'SystemCenterLab'
 $location = 'EASTUS2'
 $templateuri = 'https://raw.githubusercontent.com/wilsonmse/SystemCenterLab/Orch-Instalation/Main.json'

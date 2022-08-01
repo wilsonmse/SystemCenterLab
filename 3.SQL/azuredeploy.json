@@ -37,7 +37,7 @@
     },
     "imageOffer": {
       "type": "String",
-      "defaultValue": "sql2019-ws2019",
+      "defaultValue": "sql2016SP2-ws2016",
       "allowedValues": [
         "sql2019-ws2019",
         "sql2017-ws2019",
